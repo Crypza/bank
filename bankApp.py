@@ -1,4 +1,5 @@
-pin = 1234
+import getpass
+pin = str(1234)
 login = False
 loginA = 0
 
@@ -6,9 +7,9 @@ loginA = 0
 #Ifall pin inte är samma som userPin så avslutas programmet
 while login == False:
 
-    userPin = int(input("Skriv in din pinkod: "))
+    userPin = getpass.getpass()
 
-    if pin != userPin:
+    if userPin != pin:
         loginA = loginA + 1
         print("Felaktigt")
         if loginA > 2:
@@ -36,31 +37,33 @@ menu = 0
 #Ifall att menu inte är 0, 2 eller 3 så tas användaren direkt till insättning. Lägger till användarens input på balance
 while menu != 3:
     print("Ditt saldo är: ", balance)
-    menu = int(input("Skriv ditt val[1, 2, 3]: "))
-    if menu == 1:
-        balance = balance + float(input("Gör en instättning: "))
-        try:
-             with open("balance.txt", "w")as balanceFile:
-              balanceFile.write(str(balance))
-        except (FileNotFoundError):
-                print("Ingen fil")
-
-#Säger åt användaren att ange ett tal för att göra ett uttag och drar av det från balance, ifall att det inte är ett tal som anges spottar den ut ett Error meddelande och säger åt användaren att ange ett tal nästa gång
-    elif menu == 2:
-        print('''uttag
-        ''')
-        try:
-            uttagAmount = float(input("Gör ett uttag: "))
-            balance = balance - uttagAmount
+    try:
+        menu = int(input("Skriv ditt val[1, 2, 3]: "))
+        if menu == 1:
+            balance = balance + float(input("Gör en instättning: "))
             try:
-                 with open("balance.txt", "w")as balanceFile:
-                    balanceFile.write(str(balance))
+                with open("balance.txt", "w")as balanceFile:
+                 balanceFile.write(str(balance))
             except (FileNotFoundError):
-                print("Ingen fil")
-        except (ValueError):
-            print('''Error: invalid number. Vänligen angiv ett giltigt nummer
-            ''')
+                    print("Ingen fil")
 
+    #Säger åt användaren att ange ett tal för att göra ett uttag och drar av det från balance, ifall att det inte är ett tal som anges spottar den ut ett Error meddelande och säger åt användaren att ange ett tal nästa gång
+        elif menu == 2:
+            print('''uttag
+            ''')
+            try:
+                uttagAmount = float(input("Gör ett uttag: "))
+                balance = balance - uttagAmount
+                try:
+                    with open("balance.txt", "w")as balanceFile:
+                        balanceFile.write(str(balance))
+                except (FileNotFoundError):
+                    print("Ingen fil")
+            except (ValueError):
+                print('''Error: invalid number. Vänligen angiv ett giltigt nummer
+                ''')
+    except (ValueError):
+        print("välj ett av alternativen.")
 #Avslutar och sparar variabeln balance i balance.txt filen
     else:
         print("Fel eller avslut")
