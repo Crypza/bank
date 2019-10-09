@@ -7,7 +7,7 @@ loginA = 0
 #Ifall pin inte är samma som userPin så avslutas programmet
 while login == False:
 
-    userPin = getpass.getpass()
+    userPin = getpass.getpass("Ange din pinkod: ")
 
     if userPin != pin:
         loginA = loginA + 1
